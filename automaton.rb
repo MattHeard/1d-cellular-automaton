@@ -15,7 +15,8 @@ class Automaton
   end
 
   # Assumes 1*n neighbourhood matrix
-  def wolfram_code(neighbourhood)
+  # TODO Investigate using the Matrix class
+  def neighbourhood_id(neighbourhood)
     size = neighbourhood.size
     powers = size.times.map { |i| 2 ** i }.reverse
     size.times
@@ -35,7 +36,7 @@ if __FILE__ == $PROGRAM_NAME
   automaton = Automaton.new
   automaton.display_grid(grid)
   p automaton.neighbourhoods(grid)
-  p automaton.wolfram_code([0, 0, 0])
-  p automaton.wolfram_code([1, 1, 1])
-  p automaton.wolfram_code([0, 1, 0])
+  p automaton.neighbourhood_id([0, 0, 0])
+  p automaton.neighbourhood_id([1, 1, 1])
+  p automaton.neighbourhood_id([0, 1, 0])
 end
