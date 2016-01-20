@@ -1,13 +1,18 @@
 class Automaton
-  def build_initial_configuration
-    number_of_columns =  `/usr/bin/env tput cols`.to_i
-    grid = Array.new(number_of_columns, " ")
-    middle = number_of_columns / 2
-    grid[middle] = "█"
-    puts grid.join
+  PICTURE = [' ', '█']
+
+  def display_grid(grid)
+    puts grid.map { |cell| picture(cell) }.join
+  end
+
+  private
+
+  def picture(cell)
+    PICTURE[cell]
   end
 end
 
 if __FILE__ == $PROGRAM_NAME
-  Automaton.new.build_initial_configuration
+  grid = [ 1, 0, 0, 1, 0, 1, 0, 0, 1 ]
+  Automaton.new.display_grid(grid)
 end
