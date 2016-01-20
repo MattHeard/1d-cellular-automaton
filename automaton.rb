@@ -1,6 +1,7 @@
 class Automaton
   PICTURE = [" ", "█"]
   ROW_WIDTH = `/usr/bin/env tput cols`.to_i
+  UNKNOWN_VALUE_PICTURE = "?"
 
   def display_grid(grid)
     puts grid.map { |cell| picture(cell) }.join
@@ -13,10 +14,19 @@ class Automaton
     end
   end
 
+  # Assumes 1*n neighbourhood matrix
+  def wolfram_code(neighbourhood)
+    size = neighbourhood.size
+    powers = size.times.map { |i| 2 ** i }.reverse
+    size.times
+      .map { |i| neighbourhood[i] * powers[i] }
+      .inject(0) { |sum, n| sum + n }
+  end
+
   private
 
   def picture(cell)
-    PICTURE[cell] || "?"
+    PICTURE[cell] || UNKNOWN_VALUE_PICTURE
   end
 end
 
@@ -25,4 +35,7 @@ if __FILE__ == $PROGRAM_NAME
   automaton = Automaton.new
   automaton.display_grid(grid)
   p automaton.neighbourhoods(grid)
+  p automaton.wolfram_code([0, 0, 0])
+  p automaton.wolfram_code([1, 1, 1])
+  p automaton.wolfram_code([0, 1, 0])
 end
