@@ -1,11 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
 class Automaton
   PICTURE = [" ", "█"]
   ROW_WIDTH = `/usr/bin/env tput cols`.to_i
   ROWS = `/usr/bin/env tput lines`.to_i
   UNKNOWN_VALUE_PICTURE = "?"
 
-  def initialize
-    @rule = 86 
+  def initialize(rule)
+    @rule = rule
   end
 
   def display_grid(grid)
@@ -74,9 +78,18 @@ class Automaton
 end
 
 if __FILE__ == $PROGRAM_NAME
-  automaton = Automaton.new
+  options = {}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: automaton.rb [options]"
+    opts.on("-wRULE", "--wolfram=RULE", "Wolfram rule to apply") do |r|
+      options[:rule] = r
+    end
+  end.parse!
+
+  rule = options[:rule].to_i
+  p rule
+  automaton = Automaton.new(rule)
   grid = automaton.initial_grid
   automaton.display_grid(grid)
-
   automaton.fill_screen(grid)
 end
