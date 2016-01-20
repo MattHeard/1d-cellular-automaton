@@ -4,21 +4,18 @@ class Automaton
   ROWS = `/usr/bin/env tput lines`.to_i
   UNKNOWN_VALUE_PICTURE = "?"
 
-  # TODO Replace with conversion fn, eg: 30 => [0, 1, 1, 1, 1, 0, 0, 0]
-  RULE_THIRTY = [0, 1, 1, 1, 1, 0, 0, 0]
-
-  # TODO Replace with command line option
-  RULE = RULE_THIRTY
+  def initialize
+    @rule = 30
+  end
 
   def display_grid(grid)
     puts grid.map { |cell| picture(cell) }.join
   end
 
-  # TODO Replace RULE constant with instance variable
   def next_step(grid)
     neighbourhoods = chunk_into_neighbourhoods(grid)
     codes = neighbourhoods.map { |matrix| neighbourhood_code(matrix) }
-    codes.map { |code| apply_rule(RULE, code) }
+    codes.map { |code| apply_rule(@rule, code) }
   end
 
   def initial_grid
@@ -55,12 +52,20 @@ class Automaton
 
   # TODO Replace with math-based transformation rather than string-based
   def neighbourhood_matrix(code)
-    ("%3s" % code.to_s(2)).gsub(/ /, "0").chars.map(&:to_i)
+    size = 3
+    binary_array(code, size)
+  end
+
+  def binary_array(number, length)
+    format_string = "%#{length}s"
+    (format_string % number.to_s(2)).gsub(/ /, "0").chars.map(&:to_i)
   end
 
   # TODO Apply any rule
   def apply_rule(rule, neighbourhood_code)
-    RULE_THIRTY[neighbourhood_code]
+    size = 8
+    rule_array = binary_array(rule, size).reverse
+    rule_array[neighbourhood_code]
   end
 
   def picture(cell)
