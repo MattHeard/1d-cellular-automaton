@@ -1,11 +1,11 @@
 class Automaton
-  PICTURE = [" ", "■"]
+  PICTURE = [" ", "█"]
   ROW_WIDTH = `/usr/bin/env tput cols`.to_i
   ROWS = `/usr/bin/env tput lines`.to_i
   UNKNOWN_VALUE_PICTURE = "?"
 
   def initialize
-    @rule = 30
+    @rule = 86 
   end
 
   def display_grid(grid)
